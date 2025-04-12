@@ -3,56 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Previsioni Meteo</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Pianificazione Meteo Personale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Stile opzionale per gli indicatori in stato di caricamento */
+    .loading-indicator {
+      background-color: #4b5563; /* Grigio scuro */
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Previsioni Meteo</h1>
-    <p class="description">Seleziona il giorno, orario e posizione per ottenere le previsioni meteo.</p>
+<body class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="max-w-4xl mx-auto"> <h1 class="text-3xl font-bold mb-6 text-center">Pianificazione Meteo Personale</h1>
 
-    <form id="meteoForm">
-      <div class="row">
-        <label for="giorno">Giorno della settimana:</label>
-        <select id="giorno" required>
-          <option value="lunedì">Lunedì</option>
-          <option value="martedì">Martedì</option>
-          <option value="mercoledì">Mercoledì</option>
-          <option value="giovedì">Giovedì</option>
-          <option value="venerdì">Venerdì</option>
-          <option value="sabato">Sabato</option>
-          <option value="domenica">Domenica</option>
-        </select>
+    <div class="mb-6 p-4 bg-gray-800 rounded shadow">
+      <h2 class="text-lg font-semibold mb-2">Legenda Colori (Probabilità Precipitazioni / Vento)</h2>
+      <div class="flex gap-x-4 gap-y-2 flex-wrap">
+        <div class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-green-500"></span> Precipitazioni: 0-25% / Vento: &lt; 2.8 m/s</div>
+        <div class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-yellow-400"></span> Precipitazioni: 26-50% / Vento: &lt; 5.5 m/s</div>
+        <div class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-orange-500"></span> Precipitazioni: 51-75% / Vento: &lt; 8.3 m/s</div>
+        <div class="flex items-center gap-2"><span class="w-4 h-4 rounded-full bg-red-600"></span> Precipitazioni: 76-100% / Vento: ≥ 8.3 m/s</div>
       </div>
-      
-      <div class="row">
-        <label for="orario">Orario (0-24):</label>
-        <select id="orario" required>
-          <!-- Orari dal 0 al 24 -->
-          <option value="0">00</option>
-          <option value="1">01</option>
-          <option value="2">02</option>
-          <!-- ... aggiungi fino a 24 ... -->
-          <option value="24">24</option>
-        </select>
-      </div>
-      
-      <div class="row">
-        <label for="posizione">Posizione (Città):</label>
-        <input type="text" id="posizione" placeholder="Es. Roma" required />
-      </div>
-      
-      <div class="row">
-        <button type="submit">Ottieni Meteo</button>
-      </div>
-    </form>
+       <p class="text-xs text-gray-400 mt-2">Nota: La velocità del vento è in metri al secondo (m/s).</p>
+    </div>
 
-    <div id="result">
-      <h2>Previsioni</h2>
-      <div id="dettagli"></div>
+    <div class="space-y-4" id="giorni-container">
+      <div id="loading-message" class="text-center text-xl p-8 text-gray-400">Caricamento dati in corso...</div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
