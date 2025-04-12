@@ -1,0 +1,13 @@
+# METEO SANDRA/render.yaml
+services:
+  - type: web
+    name: meteo-sandra-app # Nome univoco per il servizio
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT --workers 2" # Usa $PORT fornito da Render, aggiungi workers
+    plan: free # o il piano che preferisci
+    envVars:
+      - key: OPENWEATHER_API_KEY
+        sync: false # Importante: Non sincronizzare la chiave da/verso il repository
+      - key: PYTHON_VERSION
+        value: 3.11 # Specifica una versione Python se necessario
