@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Previsioni Meteo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Previsioni Meteo</h1>
+    <p class="description">Seleziona il giorno, orario e posizione per ottenere le previsioni meteo.</p>
+
+    <form id="meteoForm">
+      <div class="row">
+        <label for="giorno">Giorno della settimana:</label>
+        <select id="giorno" required>
+          <option value="lunedì">Lunedì</option>
+          <option value="martedì">Martedì</option>
+          <option value="mercoledì">Mercoledì</option>
+          <option value="giovedì">Giovedì</option>
+          <option value="venerdì">Venerdì</option>
+          <option value="sabato">Sabato</option>
+          <option value="domenica">Domenica</option>
+        </select>
+      </div>
+      
+      <div class="row">
+        <label for="orario">Orario (0-24):</label>
+        <select id="orario" required>
+          <!-- Orari dal 0 al 24 -->
+          <option value="0">00</option>
+          <option value="1">01</option>
+          <option value="2">02</option>
+          <!-- ... aggiungi fino a 24 ... -->
+          <option value="24">24</option>
+        </select>
+      </div>
+      
+      <div class="row">
+        <label for="posizione">Posizione (Città):</label>
+        <input type="text" id="posizione" placeholder="Es. Roma" required />
+      </div>
+      
+      <div class="row">
+        <button type="submit">Ottieni Meteo</button>
+      </div>
+    </form>
+
+    <div id="result">
+      <h2>Previsioni</h2>
+      <div id="dettagli"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
