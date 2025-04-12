@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="error-${idSuffix}" class="text-red-400 text-xs w-full pl-[calc(theme(space.28)_+_theme(space.4))] mt-1"></div> `;
         container.appendChild(row);
 
-        // Chiama l'API per questa riga specifica usando 'cittaApi'
-        fetch('/meteo', {
+        // *** MODIFICA CHIAVE: Usa l'URL completo del servizio Render ***
+        fetch('https://meteo-api.onrender.com/meteo', { // <--- URL AGGIORNATO QUI
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -92,33 +92,37 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             if (!response.ok) {
+                // Se la risposta non è OK (es. 4xx, 5xx), leggiamo il dettaglio dell'errore dal JSON
                 return response.json().then(errData => {
-                   throw new Error(errData.detail || `Errore HTTP ${response.status}`);
+                   // Tenta di estrarre il messaggio di errore, altrimenti usa un messaggio generico
+                   const errorDetail = errData && errData.detail ? errData.detail : `Errore HTTP ${response.status}`;
+                   throw new Error(errorDetail);
                 });
             }
-            return response.json();
+            return response.json(); // Processa la risposta JSON se OK
         })
         .then(data => {
             // Aggiorna gli indicatori con i colori corretti
             // Slot 6-8
             const p68 = document.getElementById(`precip-6-8-${idSuffix}`);
             const w68 = document.getElementById(`wind-6-8-${idSuffix}`);
-            if(p68) p68.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_6_8?.pioggia_colore)}`;
-            if(w68) w68.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_6_8?.vento_colore)}`;
+            // Verifica che l'elemento esista e che i dati siano presenti prima di aggiornare
+            if(p68 && data.slot_6_8) p68.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_6_8.pioggia_colore)}`;
+            if(w68 && data.slot_6_8) w68.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_6_8.vento_colore)}`;
 
             // Slot 9-11
             const p911 = document.getElementById(`precip-9-11-${idSuffix}`);
             const w911 = document.getElementById(`wind-9-11-${idSuffix}`);
-            if(p911) p911.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_9_11?.pioggia_colore)}`;
-            if(w911) w911.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_9_11?.vento_colore)}`;
+            if(p911 && data.slot_9_11) p911.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_9_11.pioggia_colore)}`;
+            if(w911 && data.slot_9_11) w911.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_9_11.vento_colore)}`;
 
             // Slot 12-14
             const p1214 = document.getElementById(`precip-12-14-${idSuffix}`);
             const w1214 = document.getElementById(`wind-12-14-${idSuffix}`);
-            if(p1214) p1214.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_12_14?.pioggia_colore)}`;
-            if(w1214) w1214.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_12_14?.vento_colore)}`;
+            if(p1214 && data.slot_12_14) p1214.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_12_14.pioggia_colore)}`;
+            if(w1214 && data.slot_12_14) w1214.className = `w-5 h-5 rounded-full ${mapBackendColorToTailwind(data.slot_12_14.vento_colore)}`;
 
-            // Aggiungi tooltip con i valori numerici
+            // Aggiungi tooltip con i valori numerici (usando ?? 'N/D' per dati mancanti)
             if(p68) p68.title = `Precipitazioni 6-8: ${data.slot_6_8?.pioggia_avg ?? 'N/D'}%`;
             if(w68) w68.title = `Vento 6-8: ${data.slot_6_8?.vento_avg ?? 'N/D'} m/s`;
             if(p911) p911.title = `Precipitazioni 9-11: ${data.slot_9_11?.pioggia_avg ?? 'N/D'}%`;
@@ -132,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mostra un messaggio di errore specifico per quella riga
              const errorDiv = document.getElementById(`error-${idSuffix}`);
              if(errorDiv) {
+                 // Mostra il messaggio di errore estratto o uno generico
                  errorDiv.textContent = `Errore: ${error.message || 'Impossibile caricare i dati'}`;
              }
             // Cambia colore agli indicatori per mostrare l'errore
