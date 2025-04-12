@@ -1,0 +1,4 @@
+# METEO SANDRA/.gitignore
+.env
+__pycache__/
+*.pyc
